@@ -564,3 +564,50 @@
   </script>
 </body>
 </html>
+/* Proteksi Anti-Select & Anti-Long Press Save Image di iOS */
+body, img, canvas, video {
+  -webkit-touch-callout: none; /* Matikan pop-up 'Save Image' di iPhone */
+  -webkit-user-select: none;   /* Matikan seleksi teks/elemen */
+  user-select: none;
+}
+
+/* Sembunyikan elemen utama jika layar kehilangan fokus (saat screenshot/app switcher aktif) */
+.protected-content {
+  transition: filter 0.1s ease, opacity 0.1s ease;
+}
+
+/* Saat layar di-blur (kehilangan fokus) */
+body.screen-protected .protected-content {
+  filter: blur(50px) !important;
+  opacity: 0 !important; /* Membuat hasil screenshot blank/transparan */
+}
+<script>
+  // 1. Sembunyikan konten saat browser kehilangan fokus (momen screenshot di iOS)
+  window.addEventListener('blur', function () {
+    document.body.classList.add('screen-protected');
+  });
+
+  // Restore kembali saat pengguna kembali ke browser
+  window.addEventListener('focus', function () {
+    document.body.classList.remove('screen-protected');
+  });
+
+  // 2. Proteksi Tambahan: Deteksi Visibility State (misal saat masuk App Switcher / Screen Recording)
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) {
+      document.body.classList.add('screen-protected');
+    } else {
+      document.body.classList.remove('screen-protected');
+    }
+  });
+
+  // 3. Matikan Klik Kanan / Tahan Gambar di iPhone
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+  });
+</script>
+<div class="protected-content">
+  <!-- Kamera / Canvas OpenCV / Hasil Inspeksi Kemasan di sini -->
+  <video id="webcam" autoplay playsinline></video>
+  <canvas id="outputCanvas"></canvas>
+</div>
