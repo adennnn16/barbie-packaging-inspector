@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>MATTEL Barbie - Packaging Inspector</title>
+  
+  <!-- Font Google & Icon -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --barbie-pink: #e6007e;
+      --barbie-dark-pink: #c4006b;
+      --barbie-yellow: #ffeb3b;
+      --bg-gradient: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+      --card-bg: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none; /* Mencegah seleksi teks */
+      -webkit-user-select: none;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg-gradient);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
+      color: #333;
+    }
+
+    /* Container HP Mockup / Frame Utama */
+    .app-container {
+      width: 100%;
+      max-width: 410px;
+      background: var(--card-bg);
+      border-radius: 35px;
+      box-shadow: 0 20px 40px rgba(230, 0, 126, 0.2), 0 0 0 8px #ffffff;
+      overflow: hidden;
+      border: 3px solid var(--barbie-pink);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    /* Header Barbie Pink */
+    .app-header {
+      background: linear-gradient(180deg, #e6007e 0%, #d80070 100%);
+      color: white;
+      padding: 20px 20px 15px 20px;
+      border-bottom-left-radius: 25px;
+      border-bottom-right-radius: 25px;
+      position: relative;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 5px;
+    }
+
+    .brand-title {
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 2.5px;
+      color: #ffffff;
+      text-transform: uppercase;
+    }
+
+    .inspector-id {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--barbie-yellow);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .logo-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .barbie-logo {
+      font-family: 'Pacifico', cursive;
+      font-size: 32px;
+      color: #ffffff;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+      line-height: 1.1;
+    }
+
+    .subtitle-badge {
+      text-align: right;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      color: var(--barbie-yellow);
+      text-transform: uppercase;
+    }
+
+    /* Main Content Area */
+    .app-body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
+
+    /* Upload Photo Master (Aset Acuan) */
+    .master-upload-section {
+      width: 100%;
+      background: #fff5f8;
+      border: 2px dashed var(--barbie-pink);
+      border-radius: 15px;
+      padding: 10px 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .master-upload-section:hover {
+      background: #ffe6f0;
+    }
+
+    .master-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .master-info i {
+      font-size: 20px;
+      color: var(--barbie-pink);
+    }
+
+    .master-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .master-text span:first-child {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--barbie-pink);
+    }
+
+    .master-text span:last-child {
+      font-size: 10px;
+      color: #666;
+    }
+
+    /* Camera Viewfinder Box (Desain Mirip Gambar) */
+    .viewfinder-outer {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: #111;
+      border-radius: 28px;
+      padding: 12px;
+      position: relative;
+      box-shadow: inset 0 0 15px rgba(0,0,0,0.8), 0 0 0 3px #e6007e;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Bingkai Bercahaya Dotted/Sparkle Border */
+    .viewfinder-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 20px;
+      border: 3px dashed var(--barbie-yellow);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #000;
+    }
+
+    /* Neon Corner Reticles */
+    .corner-reticle {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      border: 4px solid #ffffff;
+      z-index: 10;
+    }
+
+    .top-left {
+      top: 15px;
+      left: 15px;
+      border-right: none;
+      border-bottom: none;
+      border-top-left-radius: 8px;
+    }
+
+    .top-right {
+      top: 15px;
+      right: 15px;
+      border-left: none;
+      border-bottom: none;
+      border-top-right-radius: 8px;
+    }
+
+    .bottom-left {
+      bottom: 15px;
+      left: 15px;
+      border-right: none;
+      border-top: none;
+      border-bottom-left-radius: 8px;
+    }
+
+    .bottom-right {
+      bottom: 15px;
+      right: 15px;
+      border-left: none;
+      border-top: none;
+      border-bottom-right-radius: 8px;
+    }
+
+    /* Auto Tag & Status Indicator */
+    .auto-badge {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      color: var(--barbie-yellow);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      z-index: 10;
+    }
+
+    .auto-badge::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: var(--barbie-yellow);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--barbie-yellow);
+    }
+
+    /* Live Video / Canvas Elements */
+    #webcam-feed, #canvas-output {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    /* Placeholder Video / Empty State */
+    .placeholder-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #888;
+      gap: 12px;
+      z-index: 5;
+    }
+
+    .placeholder-state i {
+      font-size: 42px;
+      color: #555;
+    }
+
+    .placeholder-state p {
+      font-size: 13px;
+      font-weight: 600;
+      color: #aaa;
+    }
+
+    /* Action Button - Scan Packaging */
+    .scan-btn {
+      width: 100%;
+      background: linear-gradient(180deg, #e6007e 0%, #b80064 100%);
+      color: white;
+      border: none;
+      padding: 16px;
+      border-radius: 20px;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(230, 0, 126, 0.4);
+      transition: all 0.2s ease;
+    }
+
+    .scan-btn:active {
+      transform: scale(0.97);
+      box-shadow: 0 4px 10px rgba(230, 0, 126, 0.4);
+    }
+
+    /* Footer Guide Text */
+    .footer-instructions {
+      text-align: center;
+      margin-top: 5px;
+    }
+
+    .star-rating {
+      color: #ff80ab;
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+
+    .instruction-text {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--barbie-pink);
+    }
+
+    .sub-instruction {
+      font-size: 11px;
+      color: #888;
+      margin-top: 2px;
+    }
+
+    /* Status Result Badge */
+    #scan-result {
+      width: 100%;
+      padding: 10px;
+      border-radius: 12px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 13px;
+      display: none;
+    }
+
+    .result-ok {
+      background: #e8f5e9;
+      color: #2e7d32;
+      border: 1px solid #a5d6a7;
+    }
+
+    .result-ng {
+      background: #ffebee;
+      color: #c62828;
+      border: 1px solid #ef9a9a;
+    }
+
+    /* Hidden File Inputs */
+    #master-file-input {
+      display: none;
+    }
+
+    /* Security Overlay (Tampilan jika Tab Ditinggalkan/Screenshot) */
+    #security-blur {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(230, 0, 126, 0.95);
+      backdrop-filter: blur(15px);
+      z-index: 9999;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-align: center;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Security Overlay -->
+  <div id="security-blur">
+    <div>
+      <i class="fa-solid fa-shield-halved" style="font-size: 50px; margin-bottom: 15px;"></i>
+      <h2>PROTECTED SCREEN</h2>
+      <p style="font-size: 12px; margin-top: 8px;">Aplikasi ini dilindungi. Screenshot & rekam layar dilarang.</p>
+    </div>
+  </div>
+
+  <div class="app-container">
+    <!-- Header App -->
+    <div class="app-header">
+      <div class="header-top">
+        <span class="brand-title">MATTEL</span>
+        <span class="inspector-id"><i class="fa-solid fa-sparkles"></i> #0001</span>
+      </div>
+      <div class="logo-row">
+        <div class="barbie-logo">Barbie</div>
+        <div class="subtitle-badge">
+          PACKAGING<br>INSPECTOR
+        </div>
+      </div>
+    </div>
+
+    <!-- Body Area -->
+    <div class="app-body">
+
+      <!-- Upload Acuan Master (1 Foto Set Barbie Lengkap) -->
+      <div class="master-upload-section" onclick="document.getElementById('master-file-input').click()">
+        <div class="master-info">
+          <i class="fa-solid fa-file-image"></i>
+          <div class="master-text">
+            <span id="master-status-title">Upload Foto Master Acuan</span>
+            <span id="master-status-desc">Klik untuk upload set lengkap</span>
+          </div>
+        </div>
+        <i class="fa-solid fa-chevron-right" style="color: var(--barbie-pink); font-size: 12px;"></i>
+      </div>
+      <input type="file" id="master-file-input" accept="image/*" onchange="handleMasterUpload(event)">
+
+      <!-- Camera Viewfinder -->
+      <div class="viewfinder-outer">
+        <div class="viewfinder-inner">
+          <div class="corner-reticle top-left"></div>
+          <div class="corner-reticle top-right"></div>
+          <div class="corner-reticle bottom-left"></div>
+          <div class="corner-reticle bottom-right"></div>
+
+          <div class="auto-badge">AUTO</div>
+
+          <!-- Element Kamera / Placeholder -->
+          <video id="webcam-feed" autoplay playsinline style="display:none;"></video>
+          <canvas id="canvas-output" style="display:none;"></canvas>
+
+          <div class="placeholder-state" id="placeholder-box">
+            <i class="fa-solid fa-camera"></i>
+            <p>Align packaging in frame</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Result Banner -->
+      <div id="scan-result"></div>
+
+      <!-- Action Button -->
+      <button class="scan-btn" onclick="triggerScan()">
+        <i class="fa-solid fa-camera"></i> SCAN PACKAGING
+      </button>
+
+      <!-- Footer Info -->
+      <div class="footer-instructions">
+        <div class="star-rating">
+          <i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i>
+        </div>
+        <div class="instruction-text">Position packaging in frame</div>
+        <div class="sub-instruction">then tap Scan Packaging</div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    let masterImageLoaded = false;
+    let videoStream = null;
+
+    // Start Webcam Feed saat halaman terbuka
+    async function startCamera() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+        const video = document.getElementById('webcam-feed');
+        video.srcObject = stream;
+        video.style.display = 'block';
+        document.getElementById('placeholder-box').style.display = 'none';
+        videoStream = stream;
+      } catch (err) {
+        console.warn("Kamera tidak dapat diakses atau diizinkan:", err);
+      }
+    }
+
+    // Handle Upload Foto Acuan Master
+    function handleMasterUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        masterImageLoaded = true;
+        document.getElementById('master-status-title').innerText = "Foto Master Terpasang ✓";
+        document.getElementById('master-status-desc').innerText = file.name.substring(0, 20) + "...";
+        document.querySelector('.master-upload-section').style.borderColor = "#2e7d32";
+        document.querySelector('.master-upload-section').style.background = "#e8f5e9";
+      }
+    }
+
+    // Trigger Pemindaian Paket
+    function triggerScan() {
+      const resultBox = document.getElementById('scan-result');
+      
+      if (!masterImageLoaded) {
+        alert("Silakan upload 'Foto Master Acuan' terlebih dahulu sebelum melakukan scan!");
+        return;
+      }
+
+      // Simulasi Pemindaian (Logika Image Subtraction / Feature Matching berjalan di sini)
+      resultBox.style.display = "block";
+      resultBox.className = "";
+      resultBox.innerText = "Scanning & Comparing...";
+      resultBox.style.background = "#fff9c4";
+      resultBox.style.color = "#f57f17";
+
+      setTimeout(() => {
+        // Random simulasi hasil untuk testing UI
+        const isComplete = Math.random() > 0.3; // 70% Peluang OK
+
+        if (isComplete) {
+          resultBox.className = "result-ok";
+          resultBox.innerHTML = '<i class="fa-solid fa-circle-check"></i> SET COMPLETE (ALL ITEMS PRESENT)';
+        } else {
+          resultBox.className = "result-ng";
+          resultBox.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> MISSING ITEM DETECTED (NG)';
+        }
+      }, 1200);
+    }
+
+    // Jalankan Kamera
+    window.addEventListener('load', startCamera);
+
+    // ==========================================
+    // SEKSI KEAMANAN (ANTI-SCREENSHOT & ACCESS)
+    // ==========================================
+
+    // 1. Buramkan Layar Jika User Pindah Tab / Buka Snipping Tool
+    window.addEventListener('blur', () => {
+      document.getElementById('security-blur').style.display = 'flex';
+    });
+
+    window.addEventListener('focus', () => {
+      document.getElementById('security-blur').style.display = 'none';
+    });
+
+    // 2. Blokir Tombol Klik Kanan
+    document.addEventListener('contextmenu', (e) => e.preventDefault());
+
+    // 3. Blokir Shortcut PrintScreen, Inspect Element, & Save Page
+    window.addEventListener('keydown', (e) => {
+      if (
+        e.key === 'PrintScreen' || 
+        (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'C' || e.key === 'c')) ||
+        (e.ctrlKey && (e.key === 'u' || e.key === 'U' || e.key === 's' || e.key === 'S' || e.key === 'p' || e.key === 'P'))
+      ) {
+        e.preventDefault();
+        alert('Tindakan ini dilarang oleh sistem keamanan perusahaan.');
+      }
+    });
+  </script>
+</body>
+</html>
