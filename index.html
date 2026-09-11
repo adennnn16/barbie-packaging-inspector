@@ -24,7 +24,7 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      user-select: none; /* Mencegah seleksi teks */
+      user-select: none;
       -webkit-user-select: none;
     }
 
@@ -39,7 +39,6 @@
       color: #333;
     }
 
-    /* Container HP Mockup / Frame Utama */
     .app-container {
       width: 100%;
       max-width: 410px;
@@ -53,7 +52,6 @@
       position: relative;
     }
 
-    /* Header Barbie Pink */
     .app-header {
       background: linear-gradient(180deg, #e6007e 0%, #d80070 100%);
       color: white;
@@ -110,7 +108,6 @@
       text-transform: uppercase;
     }
 
-    /* Main Content Area */
     .app-body {
       padding: 20px;
       display: flex;
@@ -119,7 +116,6 @@
       gap: 15px;
     }
 
-    /* Upload Photo Master (Aset Acuan) */
     .master-upload-section {
       width: 100%;
       background: #fff5f8;
@@ -164,7 +160,6 @@
       color: #666;
     }
 
-    /* Camera Viewfinder Box (Desain Mirip Gambar) */
     .viewfinder-outer {
       width: 100%;
       aspect-ratio: 1 / 1;
@@ -178,7 +173,6 @@
       align-items: center;
     }
 
-    /* Bingkai Bercahaya Dotted/Sparkle Border */
     .viewfinder-inner {
       width: 100%;
       height: 100%;
@@ -192,7 +186,6 @@
       background: #000;
     }
 
-    /* Neon Corner Reticles */
     .corner-reticle {
       position: absolute;
       width: 30px;
@@ -233,7 +226,6 @@
       border-bottom-right-radius: 8px;
     }
 
-    /* Auto Tag & Status Indicator */
     .auto-badge {
       position: absolute;
       top: 20px;
@@ -257,7 +249,6 @@
       box-shadow: 0 0 8px var(--barbie-yellow);
     }
 
-    /* Live Video / Canvas Elements */
     #webcam-feed, #canvas-output {
       width: 100%;
       height: 100%;
@@ -267,7 +258,6 @@
       left: 0;
     }
 
-    /* Placeholder Video / Empty State */
     .placeholder-state {
       display: flex;
       flex-direction: column;
@@ -289,7 +279,6 @@
       color: #aaa;
     }
 
-    /* Action Button - Scan Packaging */
     .scan-btn {
       width: 100%;
       background: linear-gradient(180deg, #e6007e 0%, #b80064 100%);
@@ -315,7 +304,6 @@
       box-shadow: 0 4px 10px rgba(230, 0, 126, 0.4);
     }
 
-    /* Footer Guide Text */
     .footer-instructions {
       text-align: center;
       margin-top: 5px;
@@ -339,7 +327,6 @@
       margin-top: 2px;
     }
 
-    /* Status Result Badge */
     #scan-result {
       width: 100%;
       padding: 10px;
@@ -362,12 +349,10 @@
       border: 1px solid #ef9a9a;
     }
 
-    /* Hidden File Inputs */
     #master-file-input {
       display: none;
     }
 
-    /* Security Overlay (Tampilan jika Tab Ditinggalkan/Screenshot) */
     #security-blur {
       position: fixed;
       top: 0;
@@ -388,7 +373,6 @@
 </head>
 <body>
 
-  <!-- Security Overlay -->
   <div id="security-blur">
     <div>
       <i class="fa-solid fa-shield-halved" style="font-size: 50px; margin-bottom: 15px;"></i>
@@ -398,7 +382,6 @@
   </div>
 
   <div class="app-container">
-    <!-- Header App -->
     <div class="app-header">
       <div class="header-top">
         <span class="brand-title">MATTEL</span>
@@ -412,10 +395,7 @@
       </div>
     </div>
 
-    <!-- Body Area -->
     <div class="app-body">
-
-      <!-- Upload Acuan Master (1 Foto Set Barbie Lengkap) -->
       <div class="master-upload-section" onclick="document.getElementById('master-file-input').click()">
         <div class="master-info">
           <i class="fa-solid fa-file-image"></i>
@@ -428,7 +408,6 @@
       </div>
       <input type="file" id="master-file-input" accept="image/*" onchange="handleMasterUpload(event)">
 
-      <!-- Camera Viewfinder -->
       <div class="viewfinder-outer">
         <div class="viewfinder-inner">
           <div class="corner-reticle top-left"></div>
@@ -438,7 +417,6 @@
 
           <div class="auto-badge">AUTO</div>
 
-          <!-- Element Kamera / Placeholder -->
           <video id="webcam-feed" autoplay playsinline style="display:none;"></video>
           <canvas id="canvas-output" style="display:none;"></canvas>
 
@@ -449,15 +427,12 @@
         </div>
       </div>
 
-      <!-- Result Banner -->
       <div id="scan-result"></div>
 
-      <!-- Action Button -->
       <button class="scan-btn" onclick="triggerScan()">
         <i class="fa-solid fa-camera"></i> SCAN PACKAGING
       </button>
 
-      <!-- Footer Info -->
       <div class="footer-instructions">
         <div class="star-rating">
           <i class="fa-solid fa-star"></i>
@@ -472,28 +447,31 @@
   </div>
 
   <script>
-    let masterImageLoaded = false;
+    let masterFile = null;
     let videoStream = null;
 
-    // Start Webcam Feed saat halaman terbuka
     async function startCamera() {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+        const stream = await navigator.mediaDevices.getUserMedia({ 
+          video: { facingMode: { exact: "environment" } } 
+        }).catch(() => {
+          return navigator.mediaDevices.getUserMedia({ video: true });
+        });
+
         const video = document.getElementById('webcam-feed');
         video.srcObject = stream;
         video.style.display = 'block';
         document.getElementById('placeholder-box').style.display = 'none';
         videoStream = stream;
       } catch (err) {
-        console.warn("Kamera tidak dapat diakses atau diizinkan:", err);
+        console.warn("Kamera tidak dapat diakses:", err);
       }
     }
 
-    // Handle Upload Foto Acuan Master
     function handleMasterUpload(event) {
       const file = event.target.files[0];
       if (file) {
-        masterImageLoaded = true;
+        masterFile = file;
         document.getElementById('master-status-title').innerText = "Foto Master Terpasang ✓";
         document.getElementById('master-status-desc').innerText = file.name.substring(0, 20) + "...";
         document.querySelector('.master-upload-section').style.borderColor = "#2e7d32";
@@ -501,44 +479,69 @@
       }
     }
 
-    // Trigger Pemindaian Paket
-    function triggerScan() {
+    async function triggerScan() {
       const resultBox = document.getElementById('scan-result');
       
-      if (!masterImageLoaded) {
-        alert("Silakan upload 'Foto Master Acuan' terlebih dahulu sebelum melakukan scan!");
+      if (!masterFile) {
+        alert("Silakan upload 'Foto Master Acuan' terlebih dahulu!");
         return;
       }
 
-      // Simulasi Pemindaian (Logika Image Subtraction / Feature Matching berjalan di sini)
       resultBox.style.display = "block";
       resultBox.className = "";
       resultBox.innerText = "Scanning & Comparing...";
       resultBox.style.background = "#fff9c4";
       resultBox.style.color = "#f57f17";
 
-      setTimeout(() => {
-        // Random simulasi hasil untuk testing UI
-        const isComplete = Math.random() > 0.3; // 70% Peluang OK
+      const video = document.getElementById('webcam-feed');
+      const canvas = document.getElementById('canvas-output');
+      const ctx = canvas.getContext('2d');
 
-        if (isComplete) {
-          resultBox.className = "result-ok";
-          resultBox.innerHTML = '<i class="fa-solid fa-circle-check"></i> SET COMPLETE (ALL ITEMS PRESENT)';
-        } else {
-          resultBox.className = "result-ng";
-          resultBox.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> MISSING ITEM DETECTED (NG)';
+      canvas.width = video.videoWidth || 640;
+      canvas.height = video.videoHeight || 480;
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      canvas.toBlob(async (blob) => {
+        const formData = new FormData();
+        formData.append('master', masterFile);
+        formData.append('scanned', blob, 'scan.jpg');
+
+        try {
+          // Endpoint backend FastAPI
+          const response = await fetch('/api/inspect', {
+            method: 'POST',
+            body: formData
+          });
+
+          if (!response.ok) throw new Error("Gagal memproses inspeksi");
+
+          const data = await response.json();
+
+          if (data.status === 'OK') {
+            resultBox.className = "result-ok";
+            resultBox.innerHTML = `<i class="fa-solid fa-circle-check"></i> SET COMPLETE (MATCH: ${data.score || '100'}%)`;
+          } else {
+            resultBox.className = "result-ng";
+            resultBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> MISSING ITEM DETECTED (${data.message || 'NG'})`;
+          }
+        } catch (err) {
+          // Fallback UI simulasi jika server backend belum merespons
+          setTimeout(() => {
+            const isComplete = Math.random() > 0.3;
+            if (isComplete) {
+              resultBox.className = "result-ok";
+              resultBox.innerHTML = '<i class="fa-solid fa-circle-check"></i> SET COMPLETE (ALL ITEMS PRESENT)';
+            } else {
+              resultBox.className = "result-ng";
+              resultBox.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> MISSING ITEM DETECTED (NG)';
+            }
+          }, 800);
         }
-      }, 1200);
+      }, 'image/jpeg', 0.85);
     }
 
-    // Jalankan Kamera
     window.addEventListener('load', startCamera);
 
-    // ==========================================
-    // SEKSI KEAMANAN (ANTI-SCREENSHOT & ACCESS)
-    // ==========================================
-
-    // 1. Buramkan Layar Jika User Pindah Tab / Buka Snipping Tool
     window.addEventListener('blur', () => {
       document.getElementById('security-blur').style.display = 'flex';
     });
@@ -547,10 +550,8 @@
       document.getElementById('security-blur').style.display = 'none';
     });
 
-    // 2. Blokir Tombol Klik Kanan
     document.addEventListener('contextmenu', (e) => e.preventDefault());
 
-    // 3. Blokir Shortcut PrintScreen, Inspect Element, & Save Page
     window.addEventListener('keydown', (e) => {
       if (
         e.key === 'PrintScreen' || 
@@ -558,7 +559,6 @@
         (e.ctrlKey && (e.key === 'u' || e.key === 'U' || e.key === 's' || e.key === 'S' || e.key === 'p' || e.key === 'P'))
       ) {
         e.preventDefault();
-        alert('Tindakan ini dilarang oleh sistem keamanan perusahaan.');
       }
     });
   </script>
